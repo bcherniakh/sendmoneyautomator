@@ -1,4 +1,4 @@
-package io.github.cherniabkhb.sendmoney.page;
+package io.github.cherniakhb.sendmoney.page;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -12,7 +12,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
-import static io.github.cherniabkhb.sendmoney.constant.WebConstant.DEFAULT_WAIT_TIMEOUT;
+import static io.github.cherniakhb.sendmoney.constant.WebConstant.DEFAULT_WAIT_TIMEOUT;
 import static org.openqa.selenium.support.ui.ExpectedConditions.attributeToBe;
 import static org.openqa.selenium.support.ui.ExpectedConditions.elementToBeClickable;
 

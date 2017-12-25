@@ -1,4 +1,4 @@
-package io.github.cherniabkhb.sendmoney.page;
+package io.github.cherniakhb.sendmoney.page;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -7,7 +7,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static io.github.cherniabkhb.sendmoney.constant.WebConstant.DEFAULT_WAIT_TIMEOUT;
+import static io.github.cherniakhb.sendmoney.constant.WebConstant.DEFAULT_WAIT_TIMEOUT;
 
 /**
  * Represent a step 2 page of Privatbank Sendmoney.
