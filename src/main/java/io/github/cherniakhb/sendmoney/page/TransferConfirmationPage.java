@@ -3,11 +3,12 @@ package io.github.cherniakhb.sendmoney.page;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.support.ui.Wait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static io.github.cherniakhb.sendmoney.constant.WebConstant.DEFAULT_WAIT_TIMEOUT;
+import static io.github.cherniakhb.sendmoney.page.xpath.SiteElements.ConfirmationPage.PHONE_NUMBER_FIELD;
+import static io.github.cherniakhb.sendmoney.page.xpath.SiteElements.ConfirmationPage.SEND_BUTTON;
 
 /**
  * Represent a step 2 page of Privatbank Sendmoney.
@@ -15,21 +16,19 @@ import static io.github.cherniakhb.sendmoney.constant.WebConstant.DEFAULT_WAIT_T
  */
 public class TransferConfirmationPage {
 
-    private static final String XPATH_PHONE_NUMBER_FIELD = "//*[@id=\"step2Phone\"]";
-    private static final String XPATH_SEND_BUTTON = "/html/body/div[2]/div[3]/div/div[15]/div";
-
     private Logger log = LoggerFactory.getLogger(TransferConfirmationPage.class);
 
     private WebDriver webDriver;
-    private WebDriverWait generalWebDriverWait;
+    private Wait<WebDriver> wait;
 
-    public TransferConfirmationPage(WebDriver webDriver) {
+    public TransferConfirmationPage(WebDriver webDriver, Wait<WebDriver> wait) {
         this.webDriver = webDriver;
-        generalWebDriverWait = new WebDriverWait(webDriver, DEFAULT_WAIT_TIMEOUT);
+        this.wait = wait;
+//        wait = new WebDriverWait(webDriver, DEFAULT_WAIT_TIMEOUT);
 
         //Wait until the page is fully loaded
         log.debug("Loading step 2 page");
-        generalWebDriverWait.until(currentWebDriver -> currentWebDriver.getCurrentUrl().endsWith("step2"));
+        this.wait.until(currentWebDriver -> currentWebDriver.getCurrentUrl().endsWith("step2"));
     }
 
     /**
@@ -37,7 +36,7 @@ public class TransferConfirmationPage {
      * Checks whether phone number field is present on a page.
      */
     public boolean isPhoneNumberFieldPresent() {
-        return !webDriver.findElements(By.xpath(XPATH_PHONE_NUMBER_FIELD)).isEmpty();
+        return !webDriver.findElements(By.xpath(PHONE_NUMBER_FIELD.xPath())).isEmpty();
     }
 
 
@@ -59,7 +58,7 @@ public class TransferConfirmationPage {
 
     public void clickSendButton() {
         log.debug("Invoking send button on step 2");
-        WebElement sendMoneyButton = webDriver.findElement(By.xpath(XPATH_SEND_BUTTON));
+        WebElement sendMoneyButton = webDriver.findElement(By.xpath(SEND_BUTTON.xPath()));
         sendMoneyButton.click();
     }
 }

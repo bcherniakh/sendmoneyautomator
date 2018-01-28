@@ -4,7 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
-import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.support.ui.Wait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,6 +13,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import static io.github.cherniakhb.sendmoney.constant.WebConstant.DEFAULT_WAIT_TIMEOUT;
+import static io.github.cherniakhb.sendmoney.page.xpath.SiteElements.MainPage.*;
 import static org.openqa.selenium.support.ui.ExpectedConditions.attributeToBe;
 import static org.openqa.selenium.support.ui.ExpectedConditions.elementToBeClickable;
 
@@ -27,22 +28,15 @@ public class SendMoneyPbPage {
     private static final String SENDMONEY_URL = "https://sendmoney.privatbank.ua/ua/";
 
     private static final String ACTIVE_SEND_BUTTON_CLASS = "content__buttom send_money_step_1";
-    private static final String XPATH_SENDER_CART_NUMBER = "/html/body/div[2]/div[3]/div/div[1]/div[1]/div/div[1]/div[1]/form/input";
-    private static final String XPATH_SENDER_CARD_EXPIRES_DATE_MONTH = "/html/body/div[2]/div[3]/div/div[1]/div[1]/div/div[1]/div[2]/select[1]";
-    private static final String XPATH_SENDER_CARD_EXPIRES_DATE_YEAR = "/html/body/div[2]/div[3]/div/div[1]/div[1]/div/div[1]/div[2]/select[2]";
-    private static final String XPATH_SENDER_CARD_CVV2 = "/html/body/div[2]/div[3]/div/div[1]/div[1]/div/div[2]/div/form/input";
-    private static final String XPATH_RECEIVER_CARD_NUMBER = "//*[@id=\"receiver_card\"]/input";
-    private static final String XPATH_AMMOUNT = "//*[@id=\"amount\"]";
-    private static final String XPATH_SEND_BUTTON = "/html/body/div[2]/div[3]/div/div[1]/div[9]";
 
     private Logger log = LoggerFactory.getLogger(SendMoneyPbPage.class);
 
     private WebDriver webDriver;
-    private WebDriverWait generalWebDriverWait;
+    private Wait<WebDriver> wait;
 
-    public SendMoneyPbPage(WebDriver webDriver) {
+    public SendMoneyPbPage(WebDriver webDriver, Wait<WebDriver> wait) {
         this.webDriver = webDriver;
-        generalWebDriverWait = new WebDriverWait(webDriver, DEFAULT_WAIT_TIMEOUT);
+        this.wait = wait;
         webDriver.get(SENDMONEY_URL);
     }
 
@@ -52,9 +46,9 @@ public class SendMoneyPbPage {
      * @param cardNumber string representation of a card number. Should be a 19 values string in the next format:
      *                   XXXX-XXXX-XXXX-XXXX. Any other representation is not acceptable and could lead to errors.
      */
-    public void fillSenderCarsNumber(String cardNumber) {
+    public void fillSenderCardNumber(String cardNumber) {
         log.debug("Filling sender card number {}", cardNumber);
-        fillCardNumber(XPATH_SENDER_CART_NUMBER, cardNumber);
+        fillCardNumber(SENDER_CARD_NUMBER.xPath(), cardNumber);
     }
 
     /**
@@ -69,8 +63,8 @@ public class SendMoneyPbPage {
      */
     public void fillSenderExpiresDate(String month, String year) {
         log.debug("Filling sender card expire date. Year: {}, Month: {}", year, month);
-        choseSelectorByValue(XPATH_SENDER_CARD_EXPIRES_DATE_MONTH, month);
-        choseSelectorByValue(XPATH_SENDER_CARD_EXPIRES_DATE_YEAR, year);
+        choseSelectorByValue(SENDER_CARD_EXPIRES_DATE_MONTH.xPath(), month);
+        choseSelectorByValue(SENDER_CARD_EXPIRES_DATE_YEAR.xPath(), year);
     }
 
     /**
@@ -80,7 +74,7 @@ public class SendMoneyPbPage {
      */
     public void fillCvv2Code(String cvvCode) {
         log.debug("Filling sender cvv2 code");
-        WebElement cvv2Element = webDriver.findElement(By.xpath(XPATH_SENDER_CARD_CVV2));
+        WebElement cvv2Element = webDriver.findElement(By.xpath(SENDER_CARD_CVV2.xPath()));
         cvv2Element.sendKeys(cvvCode);
     }
 
@@ -92,28 +86,28 @@ public class SendMoneyPbPage {
      */
     public void fillReceiverCardNumber(String cardNumber) {
         log.debug("Filling receiver card number {}", cardNumber);
-        fillCardNumber(XPATH_RECEIVER_CARD_NUMBER, cardNumber);
+        fillCardNumber(RECEIVER_CARD_NUMBER.xPath(), cardNumber);
     }
 
     public void fillAmount(String amount) {
         log.debug("Filling amount field with value {}", amount);
-        WebElement amountElement = webDriver.findElement(By.xpath(XPATH_AMMOUNT));
+        WebElement amountElement = webDriver.findElement(By.xpath(AMOUNT.xPath()));
         if (!amountElement.isEnabled()) {
             log.debug("Amount field is unavailable. Wait for {} sec", DEFAULT_WAIT_TIMEOUT);
-            generalWebDriverWait.until(elementToBeClickable(amountElement));
+            wait.until(elementToBeClickable(amountElement));
         }
         amountElement.sendKeys(amount);
     }
 
     public TransferConfirmationPage clickSendButton() {
         log.debug("Invoking send button");
-        WebElement sendMoneyButton = webDriver.findElement(By.xpath(XPATH_SEND_BUTTON));
+        WebElement sendMoneyButton = webDriver.findElement(By.xpath(SEND_BUTTON.xPath()));
         if (isSendButtonDisabled(sendMoneyButton)) {
             log.debug("Send button is not clickable. Wait for {} seconds", DEFAULT_WAIT_TIMEOUT);
-            generalWebDriverWait.until(attributeToBe(By.xpath(XPATH_SEND_BUTTON), "class", ACTIVE_SEND_BUTTON_CLASS));
+            wait.until(attributeToBe(By.xpath(SEND_BUTTON.xPath()), "class", ACTIVE_SEND_BUTTON_CLASS));
         }
         sendMoneyButton.click();
-        return new TransferConfirmationPage(webDriver);
+        return new TransferConfirmationPage(webDriver, wait);
     }
 
     /*
