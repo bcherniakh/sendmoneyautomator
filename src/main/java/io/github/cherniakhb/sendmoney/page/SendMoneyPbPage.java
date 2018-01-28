@@ -1,5 +1,7 @@
 package io.github.cherniakhb.sendmoney.page;
 
+import io.github.cherniakhb.sendmoney.exception.InvalidInputException;
+import io.github.cherniakhb.sendmoney.util.Validation;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -14,6 +16,7 @@ import java.util.List;
 
 import static io.github.cherniakhb.sendmoney.constant.WebConstant.DEFAULT_WAIT_TIMEOUT;
 import static io.github.cherniakhb.sendmoney.page.xpath.SiteElements.MainPage.*;
+import static java.lang.String.format;
 import static org.openqa.selenium.support.ui.ExpectedConditions.attributeToBe;
 import static org.openqa.selenium.support.ui.ExpectedConditions.elementToBeClickable;
 
@@ -28,6 +31,8 @@ public class SendMoneyPbPage {
     private static final String SENDMONEY_URL = "https://sendmoney.privatbank.ua/ua/";
 
     private static final String ACTIVE_SEND_BUTTON_CLASS = "content__buttom send_money_step_1";
+    private static final String ERROR_NOT_FOUR_BLOCKS_PATTERN = "Failed to split card number to 4 blocks. Created blocks %d blocks";
+    private static final String ERROR_INVALID_BLOCK_LENGTH = "Each card number block should consist of 4 symbols. Symbols in block %d. Block %s";
 
     private Logger log = LoggerFactory.getLogger(SendMoneyPbPage.class);
 
@@ -47,6 +52,8 @@ public class SendMoneyPbPage {
      *                   XXXX-XXXX-XXXX-XXXX. Any other representation is not acceptable and could lead to errors.
      */
     public void fillSenderCardNumber(String cardNumber) {
+        Validation.notNull(cardNumber, () -> new InvalidInputException("Sender card number can not be null"));
+
         log.debug("Filling sender card number {}", cardNumber);
         fillCardNumber(SENDER_CARD_NUMBER.xPath(), cardNumber);
     }
@@ -55,7 +62,7 @@ public class SendMoneyPbPage {
      * Fills the "Expires" field of the sender card on the Sendmoney page.
      *
      * @param month month representation. Should be a string of the length of 2 representing a month number
-     *              in the next range: 01-12. Where 01 - is January and 12 - is Dcember.
+     *              in the next range: 01-12. Where 01 - is January and 12 - is December.
      * @param year  year representation. Should be a string of the length of 2 representing a year.
      *              Should reflect two last digits in a year from Gregorian calendar. Example:
      *              2019 - 19
@@ -85,6 +92,8 @@ public class SendMoneyPbPage {
      *                   XXXX-XXXX-XXXX-XXXX. Any other representation is not acceptable and could lead to errors.
      */
     public void fillReceiverCardNumber(String cardNumber) {
+        Validation.notNull(cardNumber, () -> new InvalidInputException("Receiver card number can not be null"));
+
         log.debug("Filling receiver card number {}", cardNumber);
         fillCardNumber(RECEIVER_CARD_NUMBER.xPath(), cardNumber);
     }
@@ -129,8 +138,26 @@ public class SendMoneyPbPage {
 
     private void fillCardNumber(String xPathCardNumberInput, String cardNumber) {
         List<WebElement> elements = webDriver.findElements(By.xpath(xPathCardNumberInput));
-        List<String> cardNumberBlocks = Arrays.asList(cardNumber.split("-"));
+        List<String> cardNumberBlocks = splitCardNumberIntoBlocks(cardNumber);
+        verifyCreatedCardNumberBlocksBlocks(cardNumberBlocks);
         Iterator<String> iterator = cardNumberBlocks.iterator();
         elements.forEach(element -> element.sendKeys(iterator.next()));
+    }
+
+    private void verifyCreatedCardNumberBlocksBlocks(List<String> cardNumberBlocks) {
+        Validation.isFalse(cardNumberBlocks.isEmpty(),
+                () -> new InvalidInputException("Failed to tokenize card number. No fields created"));
+        Validation.isTrue(cardNumberBlocks.size() == 4,
+                () -> new InvalidInputException(format(ERROR_NOT_FOUR_BLOCKS_PATTERN, cardNumberBlocks.size())));
+        cardNumberBlocks.forEach(this::validateEachBlockCardNumberBlock);
+    }
+
+    private void validateEachBlockCardNumberBlock(String cardNumberBlock) {
+        Validation.isTrue(cardNumberBlock.length() == 4, () ->
+         new InvalidInputException(format(ERROR_INVALID_BLOCK_LENGTH, cardNumberBlock.length(), cardNumberBlock)));
+    }
+
+    private List<String> splitCardNumberIntoBlocks(String cardNumber) {
+        return Arrays.asList(cardNumber.split("-"));
     }
 }
