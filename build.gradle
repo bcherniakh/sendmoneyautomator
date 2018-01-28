@@ -53,6 +53,8 @@ configurations {
 }
 
 dependencies {
+    compile group: 'org.apache.commons', name: 'commons-collections4', version: '4.0'
+
     /*Compile dependencies*/
     compile group: 'org.seleniumhq.selenium', name: 'selenium-java', version: seleniumVersion
     compile group: 'org.seleniumhq.selenium', name: 'selenium-server', version: '3.8.1'
