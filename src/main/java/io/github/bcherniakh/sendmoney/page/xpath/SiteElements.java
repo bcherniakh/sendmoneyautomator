@@ -1,4 +1,4 @@
-package io.github.cherniakhb.sendmoney.page.xpath;
+package io.github.bcherniakh.sendmoney.page.xpath;
 
 /**
  * Aggregates the meaningful elements of the PB Sendmoney site

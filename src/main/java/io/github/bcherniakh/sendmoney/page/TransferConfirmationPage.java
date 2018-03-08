@@ -1,4 +1,4 @@
-package io.github.cherniakhb.sendmoney.page;
+package io.github.bcherniakh.sendmoney.page;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -7,8 +7,8 @@ import org.openqa.selenium.support.ui.Wait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static io.github.cherniakhb.sendmoney.page.xpath.SiteElements.ConfirmationPage.PHONE_NUMBER_FIELD;
-import static io.github.cherniakhb.sendmoney.page.xpath.SiteElements.ConfirmationPage.SEND_BUTTON;
+import static io.github.bcherniakh.sendmoney.page.xpath.SiteElements.ConfirmationPage.PHONE_NUMBER_FIELD;
+import static io.github.bcherniakh.sendmoney.page.xpath.SiteElements.ConfirmationPage.SEND_BUTTON;
 
 /**
  * Represent a step 2 page of Privatbank Sendmoney.

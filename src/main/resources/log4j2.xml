@@ -21,7 +21,7 @@
     </Appenders>
 
     <Loggers>
-        <Logger name="io.github.cherniakhb.sendmoney" level="TRACE"/>
+        <Logger name="io.github.bcherniakh.sendmoney" level="TRACE"/>
         <Logger name="org.openqa.selenium" level="TRACE"/>
 
         <Root level="INFO">

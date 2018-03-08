@@ -1,6 +1,6 @@
-package io.github.cherniakhb.sendmoney.util;
+package io.github.bcherniakh.sendmoney.util;
 
-import io.github.cherniakhb.sendmoney.exception.SendMoneyException;
+import io.github.bcherniakh.sendmoney.exception.SendMoneyException;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 

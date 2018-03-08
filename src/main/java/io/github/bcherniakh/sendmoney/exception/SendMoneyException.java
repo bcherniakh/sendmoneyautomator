@@ -1,4 +1,4 @@
-package io.github.cherniakhb.sendmoney.exception;
+package io.github.bcherniakh.sendmoney.exception;
 
 public class SendMoneyException extends RuntimeException {
 

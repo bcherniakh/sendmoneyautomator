@@ -1,7 +1,7 @@
-package io.github.cherniakhb.sendmoney.page;
+package io.github.bcherniakh.sendmoney.page;
 
-import io.github.cherniakhb.sendmoney.exception.InvalidInputException;
-import io.github.cherniakhb.sendmoney.util.Validation;
+import io.github.bcherniakh.sendmoney.exception.InvalidInputException;
+import io.github.bcherniakh.sendmoney.util.Validation;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -14,8 +14,8 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
-import static io.github.cherniakhb.sendmoney.constant.WebConstant.DEFAULT_WAIT_TIMEOUT;
-import static io.github.cherniakhb.sendmoney.page.xpath.SiteElements.MainPage.*;
+import static io.github.bcherniakh.sendmoney.constant.WebConstant.DEFAULT_WAIT_TIMEOUT;
+import static io.github.bcherniakh.sendmoney.page.xpath.SiteElements.MainPage.*;
 import static java.lang.String.format;
 import static org.openqa.selenium.support.ui.ExpectedConditions.attributeToBe;
 import static org.openqa.selenium.support.ui.ExpectedConditions.elementToBeClickable;
@@ -39,7 +39,7 @@ public class SendMoneyPbPage {
     private WebDriver webDriver;
     private Wait<WebDriver> wait;
 
-    public SendMoneyPbPage(WebDriver webDriver, Wait<WebDriver> wait) {
+    public  SendMoneyPbPage(WebDriver webDriver, Wait<WebDriver> wait) {
         this.webDriver = webDriver;
         this.wait = wait;
         webDriver.get(SENDMONEY_URL);

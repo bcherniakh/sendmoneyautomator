@@ -1,4 +1,4 @@
-group 'io.github.cherniakhb'
+group 'io.github.bcherniakh'
 version '1.0-SNAPSHOT'
 
 apply plugin: 'java'
@@ -14,6 +14,8 @@ ext.junitPlatformVersion = '1.0.2'
 ext.junitJupiterVersion  = '5.0.2'
 ext.slf4jVersion = '1.7.25'
 ext.log4jVersion = '2.10.0'
+ext.commonsCollectionsVersion = '4.0'
+ext.guiceVersion = '4.0'
 
 repositories {
     mavenCentral()
@@ -53,11 +55,11 @@ configurations {
 }
 
 dependencies {
-    compile group: 'org.apache.commons', name: 'commons-collections4', version: '4.0'
-
     /*Compile dependencies*/
+    compile group: 'org.apache.commons', name: 'commons-collections4', version: commonsCollectionsVersion
     compile group: 'org.seleniumhq.selenium', name: 'selenium-java', version: seleniumVersion
-    compile group: 'org.seleniumhq.selenium', name: 'selenium-server', version: '3.8.1'
+    compile group: 'org.seleniumhq.selenium', name: 'selenium-server', version: seleniumVersion
+    compile group: 'com.google.inject', name: 'guice', version: guiceVersion
 
     /*Logging configuration*/
     compile group: 'org.slf4j', name: 'slf4j-api', version: slf4jVersion

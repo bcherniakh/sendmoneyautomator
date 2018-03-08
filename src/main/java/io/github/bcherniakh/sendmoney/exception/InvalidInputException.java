@@ -1,6 +1,7 @@
-package io.github.cherniakhb.sendmoney.exception;
+package io.github.bcherniakh.sendmoney.exception;
 
 public class InvalidInputException extends SendMoneyException {
+
     public InvalidInputException(String message) {
         super(message);
     }
