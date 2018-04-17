@@ -1,13 +1,27 @@
 package io.github.bcherniakh.sendmoney.domain;
 
+import io.github.bcherniakh.sendmoney.config.MoneyAmount;
+import io.github.bcherniakh.sendmoney.config.ReceiverCard;
+import io.github.bcherniakh.sendmoney.config.SenderCard;
+import io.github.bcherniakh.sendmoney.config.SenderPhone;
+
+import javax.inject.Inject;
+
 public class AppSettings {
 
     private Card sender;
+
     private Card receiver;
+
     private String sendersPhoneNumber;
+
     private double amount;
 
-    public AppSettings(Card sender, Card receiver, String sendersPhoneNumber, double amount) {
+    @Inject
+    public AppSettings(@SenderCard  Card sender,
+                       @ReceiverCard Card receiver,
+                       @SenderPhone String sendersPhoneNumber,
+                       @MoneyAmount double amount) {
         this.sender = sender;
         this.receiver = receiver;
         this.sendersPhoneNumber = sendersPhoneNumber;

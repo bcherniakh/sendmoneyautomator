@@ -7,7 +7,6 @@ import io.github.bcherniakh.sendmoney.controller.AppController;
 
 public class Main {
     public static void main(String[] args) {
-
         Injector injector = Guice.createInjector(new AutomatorModule());
         AppController controller = injector.getInstance(AppController.class);
         controller.sendMoney();
