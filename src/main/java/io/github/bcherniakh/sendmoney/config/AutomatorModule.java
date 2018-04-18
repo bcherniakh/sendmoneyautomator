@@ -31,7 +31,7 @@ public class AutomatorModule extends AbstractModule {
         try {
             properties.load(new FileReader("application.properties"));
         } catch (IOException e) {
-            throw new RuntimeException("Failed to load properties");
+            throw new RuntimeException("Failed to load properties", e);
         }
 
         Names.bindProperties(binder(), properties);
