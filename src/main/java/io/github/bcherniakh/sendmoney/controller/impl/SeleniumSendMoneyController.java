@@ -12,6 +12,7 @@ import org.openqa.selenium.support.ui.Wait;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
 @Singleton
 public class SeleniumSendMoneyController implements AppController {
@@ -39,7 +40,7 @@ public class SeleniumSendMoneyController implements AppController {
 
         startPage.fillReceiverCardNumber(settings.getReceiver().getNumber());
 
-        startPage.fillAmount(String.format("%.2f", settings.getAmount()));
+        startPage.fillAmount(String.format(Locale.ROOT, "%.2f", settings.getAmount()));
         TransferConfirmationPage transferConfirmationPage = startPage.clickSendButton();
 
         if (transferConfirmationPage.isPhoneNumberFieldPresent()) {
