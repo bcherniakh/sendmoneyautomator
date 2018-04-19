@@ -2,7 +2,12 @@ group 'io.github.bcherniakh'
 version '0.1-SNAPSHOT'
 
 apply plugin: 'java'
+apply plugin: 'application'
 apply plugin: 'org.junit.platform.gradle.plugin'
+
+
+// Define the main class for the application
+mainClassName = 'io.github.bcherniakh.sendmoney.Main'
 
 sourceCompatibility = 1.8
 
@@ -49,6 +54,13 @@ configurations {
     compile.exclude group: "commons-logging"
 }
 
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'io.github.bcherniakh.sendmoney.Main'
+    }
+}
+
 dependencies {
     /*Compile dependencies*/
     compile group: 'org.apache.commons', name: 'commons-collections4', version: commonsCollectionsVersion
@@ -79,5 +91,36 @@ dependencies {
     // To use Log4J's LogManager
     testRuntime("org.apache.logging.log4j:log4j-core:${log4jVersion}")
     testRuntime("org.apache.logging.log4j:log4j-jul:${log4jVersion}")
+}
 
+task copyProperties(type: Copy) {
+    from 'src/main/resources/application.properties'
+    into './'
+}
+
+task exportProperties(type: Copy) {
+    from 'src/main/resources/application.properties'
+    into 'application'
+}
+
+task exportRunscripts(type: Copy, dependsOn: exportProperties) {
+    from 'runscripts'
+    into 'application'
+}
+
+task exportApp(type: Jar, dependsOn: exportRunscripts) {
+    manifest {
+        attributes 'Main-Class': 'io.github.bcherniakh.sendmoney.Main'
+    }
+
+    baseName = "sendmoneyautomator-runnable"
+    version = null
+    destinationDir = file('application')
+
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+    with jar
+
+    println 'Exported to application directory'
 }
